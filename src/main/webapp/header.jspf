@@ -1,0 +1,28 @@
+<%@ page session="true" %>
+<link rel="stylesheet" href="assets/styles.css" />
+<nav>
+    <a href="index.jsp">Home</a>
+    <% if(session.getAttribute("username") != null){ %>
+        <span> | Welcome, <%= session.getAttribute("username") %> </span>
+
+        <% String r = (String)session.getAttribute("role"); %>
+        <% if("admin".equals(r)) { %>
+            <a href="adminHome.jsp">Admin</a>
+            <a href="manageCategories.jsp">Categories</a>
+            <a href="manageUsers.jsp">Users</a>
+            <a href="resetPasswords.jsp">Passwords</a>
+            <a href="setLimits.jsp">Limits</a>
+        <% } else if("supplier".equals(r)) { %>
+            <a href="supplierHome.jsp">Supplier</a>
+            <a href="supplierProducts.jsp">My Products</a>
+            <a href="supplierOrders.jsp">Orders</a>
+            <a href="supplierChangePassword.jsp">Change Password</a>
+        <% } else if("user".equals(r)) { %>
+            <a href="userHome.jsp">Shop</a>
+            <a href="userOrders.jsp">My Orders</a>
+        <% } %>
+
+        <a href="logout.jsp">Logout</a>
+    <% } %>
+</nav>
+<hr/>

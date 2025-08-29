@@ -1,0 +1,154 @@
+<%@ page import="java.sql.*" %>
+<%@ include file="WEB-INF/db.jsp" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Electronics Store - Login</title>
+    <link rel="stylesheet" href="assets/styles.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url(https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png) no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            width: 400px;
+            margin: 80px auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+        }
+        h1 { margin-bottom: 20px; }
+        input[type=text], input[type=password] {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type=submit], button {
+            padding: 10px 20px;
+            border: none;
+            background: #007BFF;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        input[type=submit]:hover, button:hover { background: #0056b3; }
+        a { color: #007BFF; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .alert { color: red; margin-top: 10px; }
+
+        /* Home icon */
+        .home-icon {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+
+        /* Forgot Password Modal */
+        .modal { display: none; position: fixed; z-index: 999; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); }
+        .modal-content { background-color: #fefefe; margin: auto; padding: 20px; border-radius: 10px; width: 350px; box-shadow: 0px 0px 10px rgba(0,0,0,0.3); text-align: center; }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+        .close:hover, .close:focus { color: black; cursor: pointer; }
+        .modal input[type=text], .modal input[type=password] { width: 90%; padding: 8px; margin: 5px 0; }
+        .modal input[type=submit] { padding: 8px 15px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <!-- Home Icon -->
+    <a href="home.jsp" class="home-icon">
+        <img src="https://cdn-icons-png.flaticon.com/128/6048/6048509.png" alt="Home" width="40" height="40"/>
+    </a>
+
+<div class="container">
+<%--     <img src="https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png" class="logo" alt="Store Logo">
+--%>
+	<h1>Electronics Store</h1> 
+
+    <!-- Login Form -->
+    <h2>Login</h2>
+    <form method="post">
+        <input type="hidden" name="action" value="login"/>
+        <input type="text" name="username" placeholder="Username" required/><br/>
+        <input type="password" name="password" placeholder="Password" required/><br/>
+        <input type="submit" value="Login"/>
+    </form>
+
+    <br/>
+    <button onclick="window.location.href='register.jsp'">Create New Account</button>
+    <br/><br/>
+    <a href="#" id="forgotPwdLink">Forgot Password?</a>
+
+    <!-- Forgot Password Modal -->
+    <div id="forgotModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Forgot Password</h3>
+            <form method="post" action="forgotPassword.jsp">
+                <input type="text" name="username" placeholder="Enter your username" required/><br/>
+                <input type="password" name="newPassword" placeholder="New Password" required/><br/>
+                <input type="password" name="confirmPassword" placeholder="Confirm Password" required/><br/>
+                <input type="submit" value="Reset Password"/>
+            </form>
+        </div>
+    </div>
+
+<%
+String action = request.getParameter("action");
+if("login".equals(action)){
+    String uname = request.getParameter("username");
+    String pass = request.getParameter("password");
+
+    try {
+        PreparedStatement ps = conn.prepareStatement(
+            "SELECT id, role FROM users WHERE username=? AND password=?"
+        );
+        ps.setString(1, uname);
+        ps.setString(2, pass);
+        ResultSet rs = ps.executeQuery();
+        if(rs.next()){
+            int userId = rs.getInt("id");
+            String role = rs.getString("role");
+            session.setAttribute("userId", userId);
+            session.setAttribute("username", uname);
+            session.setAttribute("role", role);
+
+            switch(role){
+                case "admin": response.sendRedirect("adminHome.jsp"); break;
+                case "supplier": response.sendRedirect("supplierHome.jsp"); break;
+                case "user": response.sendRedirect("userHome.jsp"); break;
+                default: out.println("<div class='alert'>Invalid role!</div>");
+            }
+        } else {
+            out.println("<div class='alert'>Invalid credentials</div>");
+        }
+    } catch(Exception e){ out.println("<div class='alert'>"+e.getMessage()+"</div>"); }
+}
+%>
+</div>
+
+<script>
+    // Forgot Password Modal
+    var modal = document.getElementById("forgotModal");
+    var btn = document.getElementById("forgotPwdLink");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function() { modal.style.display = "block"; }
+    span.onclick = function() { modal.style.display = "none"; }
+    window.onclick = function(event) { if(event.target == modal){ modal.style.display = "none"; } }
+</script>
+</body>
+</html>

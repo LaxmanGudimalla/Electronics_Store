@@ -1,0 +1,120 @@
+-- Drop existing tables if you want to start fresh
+-- (WARNING: This deletes all data)
+-- DROP TABLE IF EXISTS orders, product_limits, products, categories, users;
+
+------------------------------------------------------------
+-- 1. USERS TABLE
+------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    role ENUM('admin','supplier','user') NOT NULL
+);
+
+-- Insert admin (change password later if needed)
+INSERT IGNORE INTO users (id, username, password, role)
+VALUES (1, 'admin', 'admin123', 'admin');
+
+------------------------------------------------------------
+-- 2. CATEGORIES TABLE
+------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Sample categories
+INSERT IGNORE INTO categories (id, name) VALUES
+(1, 'Laptop'),
+(2, 'Mobile'),
+(3, 'Headphone');
+
+------------------------------------------------------------
+-- 3. PRODUCTS TABLE
+------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    category_id INT,
+    supplier_id INT,
+    quantity INT DEFAULT 0,
+    price DECIMAL(10,2) NOT NULL,
+    volume_ml DECIMAL(10,2) NULL,
+    size_cm DECIMAL(10,2) NULL,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+        ON DELETE SET NULL ON UPDATE CASCADE,
+    FOREIGN KEY (supplier_id) REFERENCES users(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+---- Sample products (supplier_id will be updated later)
+--INSERT IGNORE INTO products (id, name, category_id, price, quantity)
+--VALUES
+--(1, 'Nokia Keypad Mobile', 2, 1999.00, 25),
+--(2, 'HP Laptop', 1, 55999.00, 8),
+--(3, 'JBL Headphones', 3, 2999.00, 15);
+
+DELETE FROM products;
+
+select * from products;
+------------------------------------------------------------
+-- 4. ORDERS TABLE
+------------------------------------------------------------
+drop table orders;
+
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    total_amount DECIMAL(10,2),
+    FOREIGN KEY (user_id) REFERENCES users(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- ->to create order_details table ,when placed an order!
+
+CREATE TABLE IF NOT EXISTS order_details (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    supplier_id INT NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id)
+        ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (supplier_id) REFERENCES users(id)
+        ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+------------------------------------------------------------
+-- 5. PRODUCT LIMITS (Optional Config)
+------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS product_limits (
+    id TINYINT PRIMARY KEY CHECK (id = 1),
+    max_volume_ml DECIMAL(10,2) NULL,
+    max_size_cm DECIMAL(10,2) NULL
+);
+
+INSERT IGNORE INTO product_limits (id, max_volume_ml, max_size_cm)
+VALUES (1, NULL, NULL);
+
+------------------------------------------------------------
+-- 6. FIX SUPPLIERS (Important for FK!)
+------------------------------------------------------------
+
+-- Ensure at least one supplier exists
+INSERT INTO users (username, password, role)
+SELECT 'default_supplier', 'supplier123', 'supplier'
+WHERE NOT EXISTS (SELECT 1 FROM users WHERE role='supplier');
+
+-- Assign all products to a valid supplier
+SET @supplierId = (SELECT id FROM users WHERE role='supplier' LIMIT 1);
+
+UPDATE products
+SET supplier_id = @supplierId
+WHERE supplier_id IS NULL
+   OR supplier_id NOT IN (SELECT id FROM users WHERE role='supplier');

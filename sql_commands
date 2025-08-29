@@ -1,0 +1,88 @@
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    role ENUM('user','supplier') NOT NULL
+);
+
+SELECT * from users;
+
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) UNIQUE NOT NULL
+);
+
+SELECT * FROM categories;
+
+INSERT INTO categories(name) VALUES ('Laptop'), ('Mobile'), ('Headphone');
+
+CREATE TABLE products (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    category_id INT,
+    quantity INT DEFAULT 0,
+    price DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+
+INSERT INTO products(name, category_id, price, quantity) VALUES
+('Nokia Keypad Mobile', 2, 1999.00, 25),
+('HP Laptop', 1, 55999.00, 8),
+('JBL Headphones', 3, 2999.00, 15);
+
+select * from products;
+
+
+
+#For reference of table relations
+
+SELECT * from categories;
+
+SELECT * from products;
+
+delete from categories where id=2;
+
+
+------------------------------------------------------------
+
+-- 0.1 Extend roles
+ALTER TABLE users 
+  MODIFY role ENUM('admin','supplier','user') NOT NULL;
+
+-- 0.2 Add admin (you can change password later)
+INSERT INTO users (username, password, role) VALUES ('admin', 'admin123', 'admin');
+
+-- 0.3 Link products to supplier
+ALTER TABLE products ADD COLUMN supplier_id INT NULL;
+ALTER TABLE products ADD CONSTRAINT fk_products_supplier
+  FOREIGN KEY (supplier_id) REFERENCES users(id);
+
+-- 0.4 Orders table (for user purchases & supplier views)
+CREATE TABLE IF NOT EXISTS orders (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  supplier_id INT NOT NULL,
+  product_id INT NOT NULL,
+  quantity INT NOT NULL,
+  order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (supplier_id) REFERENCES users(id),
+  FOREIGN KEY (product_id) REFERENCES products(id)
+);
+
+-- 0.5 Optional product measurements
+ALTER TABLE products 
+  ADD COLUMN volume_ml DECIMAL(10,2) NULL,
+  ADD COLUMN size_cm DECIMAL(10,2) NULL;
+
+-- 0.6 Global product measurement limits (single row config)
+CREATE TABLE IF NOT EXISTS product_limits (
+  id TINYINT PRIMARY KEY CHECK (id = 1),
+  max_volume_ml DECIMAL(10,2) NULL,
+  max_size_cm DECIMAL(10,2) NULL
+);
+
+INSERT IGNORE INTO product_limits (id, max_volume_ml, max_size_cm) VALUES (1, NULL, NULL);
+
+
