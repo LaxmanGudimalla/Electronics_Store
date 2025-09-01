@@ -53,12 +53,25 @@ if(addPidStr != null && addQtyStr != null){
 <head>
     <title>Electronics Store - Products</title>
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: url('https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png') no-repeat center center fixed;
-            background-size: cover;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    position: relative;  /* needed for ::before */
+    color: white;        /* for your content */
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png') no-repeat center center fixed;
+    background-size: cover;
+    filter: blur(5px);   /* adjust blur amount */
+    z-index: -1;         /* behind content */
+}
 		
 		/* Navbar Styles */
         .navbar {
@@ -108,7 +121,7 @@ if(addPidStr != null && addQtyStr != null){
             justify-content: center;
         }
         .product-card {
-            background: #93918D;
+            background: #5E92B5;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             padding: 15px;

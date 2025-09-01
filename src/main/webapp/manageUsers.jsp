@@ -29,13 +29,25 @@ if(deleteUserIdStr != null){
 <head>
     <title>Manage Users & Suppliers</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: url('https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png') no-repeat center center fixed;
-            background-size: cover;
-            color: #333;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    position: relative;  /* needed for ::before */
+    color: white;        /* for your content */
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png') no-repeat center center fixed;
+    background-size: cover;
+    filter: blur(5px);   /* adjust blur amount */
+    z-index: -1;         /* behind content */
+}
 		
 		/* Navbar Styles */
         .navbar {

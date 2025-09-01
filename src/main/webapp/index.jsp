@@ -7,12 +7,25 @@
     <link rel="stylesheet" href="assets/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: url(https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png) no-repeat center center fixed;
-            background-size: cover;
-        }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    position: relative;  /* needed for ::before */
+    color: white;        /* for your content */
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png') no-repeat center center fixed;
+    background-size: cover;
+    filter: blur(5px);   /* adjust blur amount */
+    z-index: -1;         /* behind content */
+}
 
         /* Navbar */
         .navbar {

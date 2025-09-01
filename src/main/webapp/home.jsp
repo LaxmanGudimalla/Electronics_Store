@@ -121,6 +121,8 @@
             <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
         </div>
     </div>
+    
+    
 
     <!-- Hero Section -->
     <div class="hero">
