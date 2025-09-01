@@ -1,28 +1,110 @@
 <%@ page session="true" %>
 <link rel="stylesheet" href="assets/styles.css" />
-<nav>
-    <a href="index.jsp">Home</a>
-    <% if(session.getAttribute("username") != null){ %>
-        <span> | Welcome, <%= session.getAttribute("username") %> </span>
 
-        <% String r = (String)session.getAttribute("role"); %>
-        <% if("admin".equals(r)) { %>
-            <a href="adminHome.jsp">Admin</a>
-            <a href="manageCategories.jsp">Categories</a>
-            <a href="manageUsers.jsp">Users</a>
-            <a href="resetPasswords.jsp">Passwords</a>
-            <a href="setLimits.jsp">Limits</a>
-        <% } else if("supplier".equals(r)) { %>
-            <a href="supplierHome.jsp">Supplier</a>
-            <a href="supplierProducts.jsp">My Products</a>
-            <a href="supplierOrders.jsp">Orders</a>
-            <a href="supplierChangePassword.jsp">Change Password</a>
-        <% } else if("user".equals(r)) { %>
-            <a href="userHome.jsp">Shop</a>
-            <a href="userOrders.jsp">My Orders</a>
+<!-- Navbar -->
+<div class="navbar">
+    <!-- Logo (always goes to home.jsp) -->
+    <div class="logo" onclick="location.href='home.jsp'">
+        <img src="https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png" 
+             alt="Logo" class="nav-logo">
+        Electronic Store
+    </div>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+        <a href="index.jsp">Home</a>
+
+        <% if(session.getAttribute("username") != null){ %>
+            <span class="welcome">Welcome, <%= session.getAttribute("username") %></span>
+
+            <% String r = (String)session.getAttribute("role"); %>
+            <% if("admin".equals(r)) { %>
+                <a href="adminHome.jsp">Admin</a>
+                <a href="manageCategories.jsp">Categories</a>
+                <a href="manageUsers.jsp">Users</a>
+                <a href="resetPasswords.jsp">Passwords</a>
+                <a href="setLimits.jsp">Limits</a>
+            <% } else if("supplier".equals(r)) { %>
+                <a href="supplierHome.jsp">Supplier</a>
+                <a href="supplierProducts.jsp">My Products</a>
+                <a href="supplierOrders.jsp">Orders</a>
+                <a href="supplierChangePassword.jsp">Change Password</a>
+            <% } else if("user".equals(r)) { %>
+                <a href="userHome.jsp">Shop</a>
+                <a href="userOrders.jsp">My Orders</a>
+            <% } %>
+
+            <a href="logout.jsp">Logout</a>
         <% } %>
+    </div>
 
-        <a href="logout.jsp">Logout</a>
-    <% } %>
-</nav>
+    <!-- Profile Icon -->
+    <div class="profile" onclick="location.href='index.jsp'">
+        <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
+    </div>
+</div>
+
 <hr/>
+
+<style>
+/* Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    background: rgba(0,0,0,0.7);
+    padding: 12px 30px;
+    font-family: Arial, sans-serif;
+}
+
+/* Logo */
+.navbar .logo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #00d4ff;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.navbar .logo .nav-logo {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* Nav links */
+.navbar .nav-links {
+    margin-left: 30px; /* spacing after logo */
+}
+
+.navbar .nav-links a {
+    margin: 0 10px;
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.navbar .nav-links a:hover {
+    color: #00d4ff;
+}
+
+.navbar .welcome {
+    margin: 0 15px;
+    font-size: 14px;
+    color: #ddd;
+}
+
+/* Profile always to the right */
+.navbar .profile {
+    margin-left: auto; /* pushes it to extreme right */
+}
+
+.navbar .profile img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+</style>

@@ -6,7 +6,7 @@
 Connection conn = null;
 String dbUrl = "jdbc:mysql://localhost:3306/e_store";
 String dbUser = "root";
-String dbPass = "";
+String dbPass = "root";
 %>
 
 <%

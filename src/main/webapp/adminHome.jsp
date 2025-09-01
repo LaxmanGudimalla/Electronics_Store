@@ -44,7 +44,7 @@ if(session.getAttribute("role") == null || !"admin".equals(session.getAttribute(
         .container {
             max-width: 700px;
             margin: 50px auto;
-            background: rgba(255,255,255,0.6);
+            background: rgba(136, 135, 134, 0.78);
             padding: 30px 25px;
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(0,0,0,0.3);
@@ -77,15 +77,6 @@ if(session.getAttribute("role") == null || !"admin".equals(session.getAttribute(
     </style>
 </head>
 <body>
-
-   <%-- <!-- Top Navbar -->
-    <div class="navbar">
-        <a href="adminHome.jsp">Home</a>
-        <a href="manageUsers.jsp">Users/Suppliers</a>
-        <a href="resetPasswords.jsp">Reset Passwords</a>
-        <a href="setLimits.jsp">Product Limits</a>
-        <a href="manageCategories.jsp">Categories</a>
-    </div> --%> 
 
     <div class="container">
         <h2>Admin Dashboard</h2>

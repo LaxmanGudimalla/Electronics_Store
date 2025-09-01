@@ -59,11 +59,33 @@ if(addPidStr != null && addQtyStr != null){
             background: url('https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png') no-repeat center center fixed;
             background-size: cover;
         }
+		
+		/* Navbar Styles */
+        .navbar {
+            display: flex;
+            background-color: rgba(0,0,0,0.8);
+            padding: 15px 30px;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-right: 15px;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            background-color: #0275d8;
+        }
+		
         .container {
             max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
-            background: rgba(255,255,255,0.95);
+            background: rgba(136, 135, 134, 0.78);
             border-radius: 10px;
         }
         h2 {
@@ -86,7 +108,7 @@ if(addPidStr != null && addQtyStr != null){
             justify-content: center;
         }
         .product-card {
-            background: #fff;
+            background: #93918D;
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             padding: 15px;
@@ -101,7 +123,7 @@ if(addPidStr != null && addQtyStr != null){
             font-size: 1.1em;
         }
         .product-card .price {
-            color: #d9534f;
+            color: #252625;
             font-weight: bold;
             margin: 5px 0;
         }
@@ -123,7 +145,7 @@ if(addPidStr != null && addQtyStr != null){
             cursor: pointer;
         }
         .product-card input[type=submit]:hover {
-            background: #4cae4c;
+            background: #252625;
         }
         .cart-btn {
             display: block;

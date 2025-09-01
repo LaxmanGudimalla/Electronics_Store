@@ -118,3 +118,6 @@ UPDATE products
 SET supplier_id = @supplierId
 WHERE supplier_id IS NULL
    OR supplier_id NOT IN (SELECT id FROM users WHERE role='supplier');
+
+   
+   

@@ -17,11 +17,33 @@ int supplierId = (Integer)session.getAttribute("userId");
         margin: 0;
         padding: 0;
     }
+		
+		/* Navbar Styles */
+        .navbar {
+            display: flex;
+            background-color: rgba(0,0,0,0.8);
+            padding: 15px 30px;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-right: 15px;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            background-color: #0275d8;
+        }
+		
     .container {
         max-width: 1000px;
         margin: 30px auto;
         padding: 20px;
-        background: rgba(255,255,255,0.95);
+        background: rgba(136, 135, 134, 0.78);
         border-radius: 10px;
     }
     h2 {

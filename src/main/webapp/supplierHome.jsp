@@ -19,10 +19,32 @@ int supplierId = (Integer)session.getAttribute("userId");
             background: url('https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png') no-repeat center center fixed;
             background-size: cover;
         }
+		
+		/* Navbar Styles */
+        .navbar {
+            display: flex;
+            background-color: rgba(0,0,0,0.8);
+            padding: 15px 30px;
+            justify-content: flex-start;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin-right: 15px;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            background-color: #0275d8;
+        }
+		
         .container {
             max-width: 900px;
             margin: 30px auto;
-            background: rgba(255,255,255,0.95);
+            background: rgba(136, 135, 134, 0.78);
             padding: 20px 30px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0,0,0,0.3);

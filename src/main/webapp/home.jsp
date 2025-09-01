@@ -69,6 +69,10 @@
             line-height: 1.6;
             margin-bottom: 30px;
         }
+        
+        .hero strong{
+        	font-size:23px;
+        }
 
         .hero button {
             padding: 12px 25px;
@@ -122,11 +126,15 @@
     <div class="hero">
         <h1>Electronic Store</h1>
         <p>
-            Welcome to Electronic Store – your one-stop destination for the latest gadgets, appliances, and accessories.  
-            We bring you the best brands at unbeatable prices.  
-            Shop smart, save big, and stay connected with technology that matters.  
-            Experience seamless shopping and fast delivery with us.  
-            Discover the future of electronics today!
+<strong>Welcome to Electronic Store,</strong> <br>
+Your ultimate destination for everything tech!
+Since our inception, we have been committed to delivering the latest gadgets, appliances, and accessories that bring convenience and innovation to your life.
+We partner with the best global brands to ensure you get top-quality products at prices that truly fit your budget.
+Whether you’re upgrading your home, enhancing your work setup, or looking for the perfect gift, we have something for everyone.
+<br>
+
+With our <b>24/7 customer support</b> and easy returns policy, your satisfaction is always guaranteed. <br>
+Discover the future of electronics today – only at Electronic Store, where technology meets trust.
         </p>
         <button onclick="location.href='index.jsp'">Shop Now</button>
     </div>
@@ -134,9 +142,9 @@
     <!-- Footer -->
     <div class="footer">
         <p>&copy; 2025 Electronic Store | 
-            <a href="#">About Us</a> | 
-            <a href="#">Services</a> | 
-            <a href="#">Contact</a>
+			<a href="about.jsp">About Us</a> | 
+			<a href="services.jsp">Services</a> | 
+			<a href="contact.jsp">Contact</a>
         </p>
     </div>
 

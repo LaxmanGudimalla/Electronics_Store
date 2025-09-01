@@ -5,6 +5,7 @@
 <head>
     <title>Electronics Store - Login</title>
     <link rel="stylesheet" href="assets/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
             margin: 0;
@@ -15,7 +16,7 @@
         .container {
             width: 400px;
             margin: 80px auto;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(136, 135, 134, 0.78);
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0,0,0,0.4);
@@ -51,6 +52,8 @@
         /* Home icon */
         .home-icon {
             position: fixed;
+            color : #007BFF;
+            font-size : 30px;
             top: 10px;
             left: 10px;
             z-index: 1000;
@@ -70,7 +73,7 @@
 
     <!-- Home Icon -->
     <a href="home.jsp" class="home-icon">
-        <img src="https://cdn-icons-png.flaticon.com/128/6048/6048509.png" alt="Home" width="40" height="40"/>
+        <i class="fas fa-home home-icon"></i>
     </a>
 
 <div class="container">
@@ -79,13 +82,14 @@
 	<h1>Electronics Store</h1> 
 
     <!-- Login Form -->
-    <h2>Login</h2>
-    <form method="post">
-        <input type="hidden" name="action" value="login"/>
-        <input type="text" name="username" placeholder="Username" required/><br/>
-        <input type="password" name="password" placeholder="Password" required/><br/>
-        <input type="submit" value="Login"/>
-    </form>
+<h2>Login</h2>
+<form method="post" autocomplete="off">
+    <input type="hidden" name="action" value="login"/>
+    <input type="text" name="username" placeholder="Username" required autocomplete="off"/><br/>
+    <input type="password" name="password" placeholder="Password" required autocomplete="new-password"/><br/>
+    <input type="submit" value="Login"/>
+</form>
+    
 
     <br/>
     <button onclick="window.location.href='register.jsp'">Create New Account</button>
