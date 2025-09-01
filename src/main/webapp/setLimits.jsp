@@ -25,8 +25,9 @@ if("save".equals(action)){
 Double curVol=null, curSize=null;
 try(Statement st = conn.createStatement(); ResultSet rs = st.executeQuery("SELECT max_volume_ml, max_size_cm FROM product_limits WHERE id=1")){
     if(rs.next()){
-        curVol = (Double) rs.getObject("max_volume_ml");
-        curSize = (Double) rs.getObject("max_size_cm");
+    	curVol = rs.getBigDecimal("max_volume_ml") != null ? rs.getBigDecimal("max_volume_ml").doubleValue() : null;
+    	curSize = rs.getBigDecimal("max_size_cm") != null ? rs.getBigDecimal("max_size_cm").doubleValue() : null;
+
     }
 }
 %>

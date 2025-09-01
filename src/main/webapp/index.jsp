@@ -13,6 +13,33 @@
             background: url(https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png) no-repeat center center fixed;
             background-size: cover;
         }
+        
+        /* Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    background: rgba(0,0,0,0.7);
+    padding: 12px 30px;
+    font-family: Arial, sans-serif;
+}
+
+/* Logo */
+.navbar .logo {
+    font-size: 20px;
+    font-weight: bold;
+    color: #00d4ff;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.navbar .logo .nav-logo {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+        
         .container {
             width: 400px;
             margin: 80px auto;
@@ -22,11 +49,7 @@
             box-shadow: 0px 0px 15px rgba(0,0,0,0.4);
             text-align: center;
         }
-        .logo {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 20px;
-        }
+        
         h1 { margin-bottom: 20px; }
         input[type=text], input[type=password] {
             width: 90%;
@@ -49,17 +72,6 @@
         a:hover { text-decoration: underline; }
         .alert { color: red; margin-top: 10px; }
 
-        /* Home icon */
-        .home-icon {
-            position: fixed;
-            color : #007BFF;
-            font-size : 30px;
-            top: 10px;
-            left: 10px;
-            z-index: 1000;
-            cursor: pointer;
-        }
-
         /* Forgot Password Modal */
         .modal { display: none; position: fixed; z-index: 999; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); }
         .modal-content { background-color: #fefefe; margin: auto; padding: 20px; border-radius: 10px; width: 350px; box-shadow: 0px 0px 10px rgba(0,0,0,0.3); text-align: center; }
@@ -71,10 +83,18 @@
 </head>
 <body>
 
-    <!-- Home Icon -->
-    <a href="home.jsp" class="home-icon">
-        <i class="fas fa-home home-icon"></i>
-    </a>
+
+<!-- Navbar -->
+<div class="navbar">
+    <!-- Logo (always goes to home.jsp) -->
+    <div class="logo" onclick="location.href='home.jsp'">
+        <img src="https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png" 
+             alt="Logo" class="nav-logo">
+        Electronic Store
+    </div>
+</div>
+
+<hr/>
 
 <div class="container">
 <%--     <img src="https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png" class="logo" alt="Store Logo">
