@@ -28,7 +28,7 @@
             Electronic Store
         </a>
     </div>
-    <div class="profile" onclick="location.href='home.jsp'">
+    <div class="profile" onclick="location.href='index.jsp'">
         <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
     </div>
 </div>

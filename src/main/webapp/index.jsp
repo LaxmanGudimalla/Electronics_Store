@@ -13,33 +13,31 @@
             background: url(https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png) no-repeat center center fixed;
             background-size: cover;
         }
-        
+
         /* Navbar */
-.navbar {
-    display: flex;
-    align-items: center;
-    background: rgba(0,0,0,0.7);
-    padding: 12px 30px;
-    font-family: Arial, sans-serif;
-}
+        .navbar {
+            display: flex;
+            align-items: center;
+            background: rgba(0,0,0,0.7);
+            padding: 12px 30px;
+        }
 
-/* Logo */
-.navbar .logo {
-    font-size: 20px;
-    font-weight: bold;
-    color: #00d4ff;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #00d4ff;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
 
-.navbar .logo .nav-logo {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    margin-right: 8px;
-}
-        
+        .navbar .logo .nav-logo {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
         .container {
             width: 400px;
             margin: 80px auto;
@@ -49,9 +47,9 @@
             box-shadow: 0px 0px 15px rgba(0,0,0,0.4);
             text-align: center;
         }
-        
+
         h1 { margin-bottom: 20px; }
-        input[type=text], input[type=password] {
+        input[type=text], input[type=password], select {
             width: 90%;
             padding: 10px;
             margin: 8px 0;
@@ -72,21 +70,17 @@
         a:hover { text-decoration: underline; }
         .alert { color: red; margin-top: 10px; }
 
-        /* Forgot Password Modal */
+        /* Modal Styles */
         .modal { display: none; position: fixed; z-index: 999; padding-top: 100px; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); }
         .modal-content { background-color: #fefefe; margin: auto; padding: 20px; border-radius: 10px; width: 350px; box-shadow: 0px 0px 10px rgba(0,0,0,0.3); text-align: center; }
         .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
         .close:hover, .close:focus { color: black; cursor: pointer; }
-        .modal input[type=text], .modal input[type=password] { width: 90%; padding: 8px; margin: 5px 0; }
-        .modal input[type=submit] { padding: 8px 15px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-
 <!-- Navbar -->
 <div class="navbar">
-    <!-- Logo (always goes to home.jsp) -->
     <div class="logo" onclick="location.href='home.jsp'">
         <img src="https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png" 
              alt="Logo" class="nav-logo">
@@ -97,38 +91,63 @@
 <hr/>
 
 <div class="container">
-<%--     <img src="https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png" class="logo" alt="Store Logo">
---%>
-	<h1>Electronics Store</h1> 
+    <h1>Electronics Store</h1> 
+
+    <!-- Show success/error messages -->
+    <%
+    String msg = request.getParameter("msg");
+    if(msg != null) {
+        out.println("<div class='alert' style='color:green;'>" + msg + "</div>");
+    }
+    %>
 
     <!-- Login Form -->
-<h2>Login</h2>
-<form method="post" autocomplete="off">
-    <input type="hidden" name="action" value="login"/>
-    <input type="text" name="username" placeholder="Username" required autocomplete="off"/><br/>
-    <input type="password" name="password" placeholder="Password" required autocomplete="new-password"/><br/>
-    <input type="submit" value="Login"/>
-</form>
-    
+    <h2>Login</h2>
+    <form method="post" autocomplete="off">
+        <input type="hidden" name="action" value="login"/>
+        <input type="text" name="username" placeholder="Username" required autocomplete="off"/><br/>
+        <input type="password" name="password" placeholder="Password" required autocomplete="new-password"/><br/>
+        <input type="submit" value="Login"/>
+    </form>
 
     <br/>
-    <button onclick="window.location.href='register.jsp'">Create New Account</button>
+    <button id="createAccountBtn">Create New Account</button>
     <br/><br/>
     <a href="#" id="forgotPwdLink">Forgot Password?</a>
+</div>
 
-    <!-- Forgot Password Modal -->
-    <div id="forgotModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3>Forgot Password</h3>
-            <form method="post" action="forgotPassword.jsp">
-                <input type="text" name="username" placeholder="Enter your username" required/><br/>
-                <input type="password" name="newPassword" placeholder="New Password" required/><br/>
-                <input type="password" name="confirmPassword" placeholder="Confirm Password" required/><br/>
-                <input type="submit" value="Reset Password"/>
-            </form>
-        </div>
+<!-- Forgot Password Modal -->
+<div id="forgotModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Forgot Password</h3>
+        <form method="post" action="forgotPassword.jsp">
+            <input type="text" name="username" placeholder="Enter your username" required/><br/>
+            <input type="password" name="newPassword" placeholder="New Password" required/><br/>
+            <input type="password" name="confirmPassword" placeholder="Confirm Password" required/><br/>
+            <input type="submit" value="Reset Password"/>
+        </form>
     </div>
+</div>
+
+<!-- Create Account Modal -->
+<div id="registerModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Create New Account</h3>
+<form method="post" action="register.jsp" autocomplete="off">
+    <input type="text" name="username" placeholder="Username" required autocomplete="new-username"/><br/>
+    <input type="password" name="password" placeholder="Password" required autocomplete="new-password"/><br/>
+    <select name="role" required>
+        <option value="">Select Role</option>
+        <option value="user">User</option>
+        <option value="supplier">Supplier</option>
+    </select><br/>
+    <input type="submit" value="Register"/>
+</form>
+
+    </div>
+</div>
 
 <%
 String action = request.getParameter("action");
@@ -162,17 +181,35 @@ if("login".equals(action)){
     } catch(Exception e){ out.println("<div class='alert'>"+e.getMessage()+"</div>"); }
 }
 %>
-</div>
 
 <script>
     // Forgot Password Modal
-    var modal = document.getElementById("forgotModal");
-    var btn = document.getElementById("forgotPwdLink");
-    var span = document.getElementsByClassName("close")[0];
+    var forgotModal = document.getElementById("forgotModal");
+    var forgotBtn = document.getElementById("forgotPwdLink");
 
-    btn.onclick = function() { modal.style.display = "block"; }
-    span.onclick = function() { modal.style.display = "none"; }
-    window.onclick = function(event) { if(event.target == modal){ modal.style.display = "none"; } }
+    // Register Modal
+    var registerModal = document.getElementById("registerModal");
+    var registerBtn = document.getElementById("createAccountBtn");
+
+    var spans = document.getElementsByClassName("close");
+
+    // Open modals
+    forgotBtn.onclick = function() { forgotModal.style.display = "block"; }
+    registerBtn.onclick = function() { registerModal.style.display = "block"; }
+
+    // Close modals
+    for(let i=0;i<spans.length;i++){
+        spans[i].onclick = function() {
+            forgotModal.style.display = "none";
+            registerModal.style.display = "none";
+        }
+    }
+
+    window.onclick = function(event) { 
+        if(event.target == forgotModal){ forgotModal.style.display = "none"; }
+        if(event.target == registerModal){ registerModal.style.display = "none"; }
+    }
 </script>
+
 </body>
 </html>

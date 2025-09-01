@@ -35,7 +35,7 @@
             Electronic Store
         </a>
     </div>
-    <div class="profile" onclick="location.href='home.jsp'">
+    <div class="profile" onclick="location.href='index.jsp'">
         <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Profile">
     </div>
 </div>
@@ -45,7 +45,7 @@
     <div class="content">
         <h1>About Us</h1>
         <p>
-At Electronic Store, we are passionate about bringing the world of technology closer to you.
+At Electronic Store, <br>we are passionate about bringing the world of technology closer to you.
 Since 2010, we have been a trusted destination for gadgets, appliances, and accessories.
 Our mission is to make technology accessible, affordable, and reliable for everyone.
 
