@@ -57,7 +57,6 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     position: relative;  /* needed for ::before */
-
 }
 
 body::before {
@@ -72,111 +71,89 @@ body::before {
     filter: blur(5px);   /* adjust blur amount */
     z-index: -1;         /* behind content */
 }
-		
-		/* Navbar Styles */
-        .navbar {
-            display: flex;
-            background-color: rgba(0,0,0,0.8);
-            padding: 15px 30px;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin-right: 15px;
-            border-radius: 6px;
-            transition: 0.3s;
-            font-weight: bold;
-        }
-        .navbar a:hover {
-            background-color: #0275d8;
-        }
-		
-        .container {
-            max-width: 1200px;
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(136, 135, 134, 0.78);
-            border-radius: 10px;
-        }
-        h2 {
-            text-align: center;
-            color: #333;
-        }
-        .message {
-            text-align: center;
-            color: green;
-            font-weight: bold;
-        }
-        .category-select {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .products {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: center;
-        }
-        .product-card {
-            background: #5E92B5;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            padding: 15px;
-            width: 220px;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-        .product-card b {
-            font-size: 1.1em;
-        }
-        .product-card .price {
-            color: #252625;
-            font-weight: bold;
-            margin: 5px 0;
-        }
-        .product-card .details {
-            font-size: 0.85em;
-            color: #555;
-        }
-        .product-card input[type=number] {
-            width: 60px;
-            padding: 5px;
-            margin: 5px 0;
-        }
-        .product-card input[type=submit] {
-            padding: 5px 10px;
-            background: #5cb85c;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .product-card input[type=submit]:hover {
-            background: #252625;
-        }
-        .cart-btn {
-            display: block;
-            text-align: center;
-            margin-top: 30px;
-        }
-        .cart-btn button {
-            padding: 10px 20px;
-            font-size: 1em;
-            background: #0275d8;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .cart-btn button:hover {
-            background: #025aa5;
-        }
+
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    background-color: rgba(0,0,0,0.8);
+    padding: 15px 30px;
+    justify-content: flex-start;
+    align-items: center;
+}
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin-right: 15px;
+    border-radius: 6px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+.navbar a:hover { background-color: #0275d8; }
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: rgba(136, 135, 134, 0.78);
+    border-radius: 10px;
+}
+h2 { text-align: center; color: #333; }
+.message { text-align: center; color: green; font-weight: bold; }
+
+.category-select { text-align: center; margin-bottom: 20px; }
+
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.product-card {
+    background: #5E92B5;
+    border-radius: 12px; /* rounded card edges */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    padding: 15px;
+    width: 220px;
+    text-align: center;
+    transition: transform 0.2s;
+}
+.product-card:hover { transform: translateY(-5px); }
+.product-card b { font-size: 1.1em; }
+.product-card .price { color: #252625; font-weight: bold; margin: 5px 0; }
+.product-card .details { font-size: 0.85em; color: #555; }
+
+.product-card img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 12px; /* curved image edges */
+    margin-bottom: 10px;
+}
+
+.product-card input[type=number] { width: 60px; padding: 5px; margin: 5px 0; }
+.product-card input[type=submit] {
+    padding: 5px 10px;
+    background: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.product-card input[type=submit]:hover { background: #252625; }
+
+.cart-btn { display: block; text-align: center; margin-top: 30px; }
+.cart-btn button {
+    padding: 10px 20px;
+    font-size: 1em;
+    background: #0275d8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.cart-btn button:hover { background: #025aa5; }
     </style>
 </head>
 <body>
@@ -220,15 +197,17 @@ body::before {
                 double price = rs.getDouble("price");
                 int stock = rs.getInt("quantity");
                 Double size = rs.getObject("size_cm") != null ? rs.getDouble("size_cm") : null;
-                Double volume = rs.getObject("volume_ml") != null ? rs.getDouble("volume_ml") : null;
                 String catName = categoryMap.get(rs.getInt("category_id"));
+                String imageUrl = rs.getString("image_url");
         %>
             <div class="product-card">
+                <% if(imageUrl != null && !imageUrl.isEmpty()){ %>
+                    <img src="<%=imageUrl%>" alt="Product Image"/>
+                <% } %> <br>
                 <b><%=pname%></b>
                 <div class="price">Rs. <%=price%></div>
                 <div class="details">
                     <% if(size != null){ %>Size: <%=size%> cm<br/><% } %>
-                    <% if(volume != null){ %>Volume: <%=volume%> ml<br/><% } %>
                     Category: <%=catName%>
                 </div>
                 <form method="get">

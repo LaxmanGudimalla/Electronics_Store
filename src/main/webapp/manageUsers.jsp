@@ -208,7 +208,7 @@ $(document).ready(function() {
     function showPage(page, rows) {
         var start = (page - 1) * rowsPerPage;
         var end = start + rowsPerPage;
-        rows.hide().slice(start, end).show();
+        rows.hide().slice(start, end).show();  //shows only the rows for the selected page.
     }
 
     function updatePagination(rows) {
@@ -219,7 +219,7 @@ $(document).ready(function() {
             $('#pagination').append('<button class="page-btn" data-page="' + i + '">' + i + '</button>');
         }
         $('#pagination .page-btn').first().addClass('active');
-    }
+    }		//Dynamically creates pagination buttons based on number of rows.
 
     // initial display
     showPage(1, filteredRows);
@@ -231,14 +231,14 @@ $(document).ready(function() {
         showPage(page, filteredRows);
         $('.page-btn').removeClass('active');
         $(this).addClass('active');
-    });
+    });			//Highlights the active button and shows only that pages rows.
 
     // search functionality
     $('#searchInput').on('keyup', function() {
         var value = $(this).val().toLowerCase();
         filteredRows = $rows.filter(function() {
             return $(this).text().toLowerCase().indexOf(value) > -1;
-        });
+        });				//keeps only rows that contain the search text.
         $rows.hide();
         showPage(1, filteredRows);
         updatePagination(filteredRows);
