@@ -30,7 +30,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     position: relative;  /* needed for ::before */
-    color: white;        /* for your content */
+
 }
 
 body::before {
@@ -102,6 +102,9 @@ body::before {
             border: none;
             border-radius: 5px;
             cursor: pointer;
+        }
+        td {
+        color: #323030;
         }
         input[type=submit]:hover { background-color: #c9302c; }
         a.back-btn {

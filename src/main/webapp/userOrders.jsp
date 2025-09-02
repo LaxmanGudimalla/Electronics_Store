@@ -17,7 +17,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     position: relative;  /* needed for ::before */
-    color: white;        /* for your content */
+
 }
 
 body::before {
@@ -88,6 +88,9 @@ body::before {
             margin-top: 20px;
             font-size: 1.1em;
             color: #d9534f;
+        }
+        td {
+        color: #323030;
         }
     </style>
 </head>

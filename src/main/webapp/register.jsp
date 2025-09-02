@@ -16,8 +16,9 @@ if(uname != null && pass != null && role != null){
             // Username already exists
             response.sendRedirect("index.jsp?msg=Username+already+exists");
         } else {
+            // Added status=1 so new users show up in manageUsers.jsp
             PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO users(username, password, role) VALUES(?,?,?)"
+                "INSERT INTO users(username, password, role, status) VALUES(?,?,?,1)"
             );
             ps.setString(1, uname);
             ps.setString(2, pass);

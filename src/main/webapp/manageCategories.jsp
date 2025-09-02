@@ -38,140 +38,147 @@ if("add".equals(action)){
 <head>
     <title>Manage Categories</title>
     <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    position: relative;  /* needed for ::before */
-    color: white;        /* for your content */
+        body { margin:0; font-family:Arial,sans-serif; position:relative; }
+        body::before {
+            content:""; position:fixed; top:0; left:0; width:100%; height:100%;
+            background:url('https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png') no-repeat center center fixed;
+            background-size:cover; filter:blur(5px); z-index:-1;
+        }
+        
+        
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    background-color: rgba(0,0,0,0.8);
+    padding: 15px 30px;
+    justify-content: flex-start;
+    align-items: center;
 }
-
-body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: url('https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png') no-repeat center center fixed;
-    background-size: cover;
-    filter: blur(5px);   /* adjust blur amount */
-    z-index: -1;         /* behind content */
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin-right: 15px;
+    border-radius: 6px;
+    transition: 0.3s;
+    font-weight: bold;
 }
+.navbar a:hover {
+    background-color: #0275d8;
+}
+        
+        .container { max-width:800px; margin:100px auto 50px auto; background:rgba(136,135,134,0.78); padding:30px 25px; border-radius:12px; box-shadow:0 0 20px rgba(0,0,0,0.3); }
+        h2 { color:#0275d8; margin-bottom:20px; text-align:center; }
+        table { width:100%; border-collapse:collapse; margin-top:20px; }
+        th, td { border:1px solid #ccc; padding:10px 8px; text-align:center; }
+        th { background-color:#0275d8; color:white; }
+        .alert { color:red; }
 
-		
-		/* Navbar Styles */
-        .navbar {
-            display: flex;
-            background-color: rgba(0,0,0,0.8);
-            padding: 15px 30px;
-            justify-content: flex-start;
-            align-items: center;
+        /* Buttons */
+        button, input[type=submit] {
+            padding:5px 10px;
+            font-size:13px;
+            line-height:1.4;
+            border:none;
+            border-radius:6px;
+            cursor:pointer;
+            transition:0.3s;
+            display:inline-block;
+            vertical-align:middle;
         }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin-right: 15px;
-            border-radius: 6px;
-            transition: 0.3s;
-            font-weight: bold;
-        }
-        .navbar a:hover {
-            background-color: #0275d8;
-        }
-		
-        .container {
-            max-width: 800px;
-            margin: 50px auto;
-            background:rgba(136, 135, 134, 0.78);
-            padding: 30px 25px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
-
-        h2 { color: #0275d8; margin-bottom: 20px; }
-        h3 { color: #333; margin-top: 25px; }
-
-        input[type=text], input[type=submit] {
-            padding: 8px 12px;
-            margin: 5px 0;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            font-size: 14px;
-        }
+        button { background-color:#0275d8; color:white; height:30px; margin-right:5px; }
+        button:hover { background-color:#025aa5; }
 
         input[type=submit] {
-            background-color: #0275d8;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: 0.3s;
+            background-color:red;
+            color:white;
         }
         input[type=submit]:hover {
-            background-color: #025aa5;
+            background-color:darkred;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+        /* Add form */
+        form.add-form { display:flex; gap:5px; align-items:center; margin-bottom:20px; }
+        form.add-form input[type=text] { flex:1; padding:5px 8px; border-radius:6px; border:1px solid #ccc; font-size:13px; }
 
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px 8px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #0275d8;
-            color: white;
-        }
-
-        td form { display: inline; }
-
-        .alert { color: red; }
+        /* Modal */
+        .modal { display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.5); }
+        .modal-content { background-color:#fefefe; margin:15% auto; padding:20px; border-radius:12px; width:300px; position:relative; }
+        .close { color:#aaa; position:absolute; top:10px; right:15px; font-size:28px; font-weight:bold; cursor:pointer; }
+        .close:hover { color:black; }
+        .modal-content input[type=text], .modal-content input[type=submit] { width:100%; margin-top:10px; }
     </style>
 </head>
 <body>
+
+<!--  Navbar already included via header.jspf -->
+
 <div class="container">
     <h2>Manage Categories</h2>
 
+    <!-- Add Category -->
     <h3>Add New Category</h3>
-    <form method="post">
+    <form method="post" class="add-form">
         <input type="hidden" name="action" value="add">
         <input type="text" name="name" placeholder="Category name" required>
         <input type="submit" value="Add">
     </form>
 
+    <!-- Existing Categories -->
     <h3>Existing Categories</h3>
     <table>
         <tr><th>ID</th><th>Name</th><th>Actions</th></tr>
-    <%
-    try (Statement st = conn.createStatement();
-         ResultSet rs = st.executeQuery("SELECT * FROM categories ORDER BY id")) {
-        while(rs.next()){
-    %>
-    <tr>
-        <td><%=rs.getInt("id")%></td>
-        <td>
-            <form method="post">
-                <input type="hidden" name="action" value="update">
-                <input type="hidden" name="id" value="<%=rs.getInt("id")%>">
-                <input type="text" name="name" value="<%=rs.getString("name")%>" required>
-                <input type="submit" value="Save">
-            </form>
-        </td>
-        <td>
-            <form method="post" onsubmit="return confirm('Delete this category?')">
-                <input type="hidden" name="action" value="delete">
-                <input type="hidden" name="id" value="<%=rs.getInt("id")%>">
-                <input type="submit" value="Delete">
-            </form>
-        </td>
-    </tr>
-    <% }} %>
+        <%
+        try (Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery("SELECT * FROM categories ORDER BY id")) {
+            while(rs.next()){
+        %>
+        <tr id="row-<%=rs.getInt("id")%>">
+            <td><%=rs.getInt("id")%></td>
+            <td id="name-<%=rs.getInt("id")%>"><%=rs.getString("name")%></td>
+            <td>
+                <!-- Edit + Delete buttons side by side -->
+                <button onclick="openEditModal(<%=rs.getInt("id")%>, '<%=rs.getString("name").replace("'", "\\'")%>')">Edit</button>
+                <form method="post" style="display:inline;">
+                    <input type="hidden" name="action" value="delete">
+                    <input type="hidden" name="id" value="<%=rs.getInt("id")%>">
+                    <input type="submit" value="Delete" onclick="return confirm('Delete this category?')">
+                </form>
+            </td>
+        </tr>
+        <% }} %>
     </table>
 </div>
+
+<!-- Edit Modal -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <h3>Edit Category</h3>
+        <form id="editForm" method="post">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" name="id" id="edit-id">
+            <input type="text" name="name" id="edit-name" required>
+            <input type="submit" value="Save Changes">
+        </form>
+    </div>
+</div>
+
+<script>
+function openEditModal(id, name){
+    document.getElementById('edit-id').value = id;
+    document.getElementById('edit-name').value = name;
+    document.getElementById('editModal').style.display = 'block';
+}
+function closeEditModal(){
+    document.getElementById('editModal').style.display = 'none';
+}
+// Close modal if user clicks outside
+window.onclick = function(event) {
+    if(event.target == document.getElementById('editModal')){
+        closeEditModal();
+    }
+}
+</script>
 </body>
 </html>

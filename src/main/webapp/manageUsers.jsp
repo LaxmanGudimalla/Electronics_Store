@@ -6,20 +6,19 @@ if(session.getAttribute("role") == null || !"admin".equals(session.getAttribute(
     response.sendRedirect("index.jsp"); return; 
 }
 
-// Handle deletion
+// Handle soft deletion
 String deleteUserIdStr = request.getParameter("deleteUserId");
 if(deleteUserIdStr != null){
     int deleteUserId = Integer.parseInt(deleteUserIdStr);
-    if(deleteUserId != 1){ // Optional: prevent deleting admin with id=1
-        try(PreparedStatement ps = conn.prepareStatement("DELETE FROM users WHERE id=?")){
+    if(deleteUserId != 1){ // Optional: prevent deactivating admin with id=1
+        try(PreparedStatement ps = conn.prepareStatement("UPDATE users SET status=0 WHERE id=?")){
             ps.setInt(1, deleteUserId);
             ps.executeUpdate();
-            out.println("<p style='color:green'>User deleted successfully.</p>");
         } catch(Exception e){
-            out.println("<p style='color:red'>Error deleting user: " + e.getMessage() + "</p>");
+            out.println("<p style='color:red'>Error deactivating user: " + e.getMessage() + "</p>");
         }
     } else {
-        out.println("<p style='color:red'>Cannot delete admin user.</p>");
+        out.println("<p style='color:red'>Cannot deactivate admin user.</p>");
     }
 }
 %>
@@ -28,12 +27,12 @@ if(deleteUserIdStr != null){
 <html>
 <head>
     <title>Manage Users & Suppliers</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    position: relative;  /* needed for ::before */
-    color: white;        /* for your content */
+    position: relative;
 }
 
 body::before {
@@ -45,93 +44,141 @@ body::before {
     height: 100%;
     background: url('https://cdn.pixabay.com/photo/2016/12/21/16/34/shopping-cart-1923313_1280.png') no-repeat center center fixed;
     background-size: cover;
-    filter: blur(5px);   /* adjust blur amount */
-    z-index: -1;         /* behind content */
+    filter: blur(5px);
+    z-index: -1;
 }
-		
-		/* Navbar Styles */
-        .navbar {
-            display: flex;
-            background-color: rgba(0,0,0,0.8);
-            padding: 15px 30px;
-            justify-content: flex-start;
-            align-items: center;
-        }
-        .navbar a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            margin-right: 15px;
-            border-radius: 6px;
-            transition: 0.3s;
-            font-weight: bold;
-        }
-        .navbar a:hover {
-            background-color: #0275d8;
-        }
-		
-        .container {
-            max-width: 900px;
-            margin: 50px auto;
-            background: rgba(136, 135, 134, 0.78);
-            padding: 30px 25px;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.3);
-        }
-        h2 { color: #0275d8; margin-bottom: 20px; }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    background-color: rgba(0,0,0,0.8);
+    padding: 15px 30px;
+    justify-content: flex-start;
+    align-items: center;
+}
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    margin-right: 15px;
+    border-radius: 6px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+.navbar a:hover {
+    background-color: #0275d8;
+}
 
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px 8px;
-            text-align: center;
-        }
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    background: rgba(136, 135, 134, 0.78);
+    padding: 30px 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
 
-        th {
-            background-color: #0275d8;
-            color: white;
-        }
+h2 { color: #0275d8; margin-bottom: 20px; }
 
-        input[type=submit] {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 6px;
-            background-color: #d9534f;
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-        }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
 
-        input[type=submit]:hover {
-            background-color: #c9302c;
-        }
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px 8px;
+    text-align: center;
+}
 
-        .alert { margin-top: 10px; color: red; }
+th {
+    background-color: #0275d8;
+    color: white;
+}
+
+input[type=submit] {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    background-color: #d9534f;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+input[type=submit]:hover {
+    background-color: #c9302c;
+}
+
+#pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.page-btn {
+    padding: 5px 10px;
+    margin: 0 3px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background: #0275d8;
+    color: white;
+}
+
+.page-btn.active {
+    background: #025aa5;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.alert { margin-top: 10px; color: red; }
     </style>
 </head>
 <body>
+
+<%--     <!-- Navbar added -->
+    <div class="navbar">
+        <a href="adminDashboard.jsp">Dashboard</a>
+        <a href="manageCategories.jsp">Manage Categories</a>
+        <a href="manageUsers.jsp">Manage Users</a>
+        <a href="resetPasswords.jsp">Reset Passwords</a>
+        <a href="setLimits.jsp">Set Limits</a>
+        <a href="logout.jsp">Logout</a>
+    </div>
+    
+--%>
+
 <div class="container">
     <h2>All Users & Suppliers</h2>
+
+    <!-- Search bar -->
+    <input type="text" id="searchInput" placeholder="Search users...">
+
     <table>
+        <thead>
         <tr>
             <th>ID</th>
             <th>Username</th>
             <th>Role</th>
             <th>Action</th>
         </tr>
-    <%
-    try(Statement st = conn.createStatement(); 
-        ResultSet rs = st.executeQuery("SELECT id, username, role FROM users ORDER BY id")) {
-        while(rs.next()){
-            int uid = rs.getInt("id");
-            String uname = rs.getString("username");
-            String role = rs.getString("role");
-    %>
+        </thead>
+        <tbody>
+        <%
+        try(Statement st = conn.createStatement(); 
+            ResultSet rs = st.executeQuery("SELECT id, username, role FROM users WHERE status=1 ORDER BY id")) {
+            while(rs.next()){
+                int uid = rs.getInt("id");
+                String uname = rs.getString("username");
+                String role = rs.getString("role");
+        %>
         <tr>
             <td><%=uid%></td>
             <td><%=uname%></td>
@@ -145,8 +192,59 @@ body::before {
                 <% } %>
             </td>
         </tr>
-    <% }} %>
+        <% }} %>
+        </tbody>
     </table>
+
+    <div id="pagination"></div>
 </div>
+
+<script>
+$(document).ready(function() {
+    var rowsPerPage = 5;
+    var $rows = $('table tbody tr');
+    var filteredRows = $rows; // start with all rows
+
+    function showPage(page, rows) {
+        var start = (page - 1) * rowsPerPage;
+        var end = start + rowsPerPage;
+        rows.hide().slice(start, end).show();
+    }
+
+    function updatePagination(rows) {
+        $('#pagination').empty();
+        var totalPages = Math.ceil(rows.length / rowsPerPage);
+        if (totalPages === 0) return;
+        for (var i = 1; i <= totalPages; i++) {
+            $('#pagination').append('<button class="page-btn" data-page="' + i + '">' + i + '</button>');
+        }
+        $('#pagination .page-btn').first().addClass('active');
+    }
+
+    // initial display
+    showPage(1, filteredRows);
+    updatePagination(filteredRows);
+
+    // page click
+    $('#pagination').on('click', '.page-btn', function() {
+        var page = $(this).data('page');
+        showPage(page, filteredRows);
+        $('.page-btn').removeClass('active');
+        $(this).addClass('active');
+    });
+
+    // search functionality
+    $('#searchInput').on('keyup', function() {
+        var value = $(this).val().toLowerCase();
+        filteredRows = $rows.filter(function() {
+            return $(this).text().toLowerCase().indexOf(value) > -1;
+        });
+        $rows.hide();
+        showPage(1, filteredRows);
+        updatePagination(filteredRows);
+    });
+});
+</script>
+
 </body>
 </html>

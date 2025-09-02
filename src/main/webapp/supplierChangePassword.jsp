@@ -37,7 +37,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     position: relative;  /* needed for ::before */
-    color: white;        /* for your content */
+
 }
 
 body::before {

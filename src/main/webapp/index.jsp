@@ -11,7 +11,7 @@ body {
     margin: 0;
     font-family: Arial, sans-serif;
     position: relative;  /* needed for ::before */
-    color: white;        /* for your content */
+
 }
 
 body::before {
@@ -126,7 +126,14 @@ body::before {
     <br/>
     <button id="createAccountBtn">Create New Account</button>
     <br/><br/>
-    <a href="#" id="forgotPwdLink">Forgot Password?</a>
+    <a href="#" id="forgotPwdLink">Forgot Password?</a><%
+    String error = request.getParameter("error");
+    if(error != null){
+%>
+    <div class="alert" style="color:red; margin-top:5px;"><%= error %></div>
+<%
+    }
+%>
 </div>
 
 <!-- Forgot Password Modal -->
@@ -170,7 +177,7 @@ if("login".equals(action)){
 
     try {
         PreparedStatement ps = conn.prepareStatement(
-            "SELECT id, role FROM users WHERE username=? AND password=?"
+            "SELECT id, role FROM users WHERE username=? AND password=? AND status=1"
         );
         ps.setString(1, uname);
         ps.setString(2, pass);
@@ -189,7 +196,7 @@ if("login".equals(action)){
                 default: out.println("<div class='alert'>Invalid role!</div>");
             }
         } else {
-            out.println("<div class='alert'>Invalid credentials</div>");
+        	response.sendRedirect("index.jsp?error=Invalid+credentials");
         }
     } catch(Exception e){ out.println("<div class='alert'>"+e.getMessage()+"</div>"); }
 }
